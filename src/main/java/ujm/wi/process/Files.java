@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import ujm.wi.entities.Agent;
 import ujm.wi.enums.Paths;
 
 public class Files {
@@ -19,6 +20,7 @@ public class Files {
 	public static HashMap<String, String> variableDomain = new HashMap<String, String>();
 	public static List<List<String>> constraintList = new ArrayList<List<String>>();
 	public static HashMap<List<String>, List<List<String>>> cost = new HashMap<List<String>, List<List<String>>>();
+	public static List<Agent> agents = new ArrayList<Agent>();
 
 	public static void main(String[] args) throws IOException {
 
@@ -26,24 +28,60 @@ public class Files {
 		System.out.println("start at : " + startTime);
 		fileToList();
 
-		//showHashMapStringString(variableDomain);
-		
-		printCostHashMap();
-		
-		long endTime   = System.currentTimeMillis();
+		/* List of All Agent */
+		agents = generateListOfAgents();
+		// showHashMapStringString(variableDomain);
+
+		// printCostHashMap();
+		System.out.println("cost size : " + cost.size());
+
+		// WriteInFile.writeFile(neighbors);
+
+		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println(totalTime);
 
 	}
 
-	public static void printCostHashMap(){
+	/**
+	 * this function generate the list of all agents
+	 * @return
+	 */
+	public static List<Agent> generateListOfAgents() {
+		List<Agent> agents = new ArrayList<Agent>();
+		Set<String> keys = neighbors.keySet();
+		Set<List<String>> keysCost = cost.keySet();
+
+		for (String s : keys) {
+			Agent agent = new Agent();
+			agent.setName(s);
+			agent.setNeighbors(neighbors.get(s));
+			agent.setSons(neighbors.get(s));
+			//neighbors.remove(s);
+			HashMap<List<String>, List<List<String>>> costAgent = new HashMap<List<String>, List<List<String>>>();
+			for (List<String> conf : keysCost) {
+				if (conf.get(0).equals(s)) {
+					//conf.remove(0);
+					costAgent.put(conf, cost.get(conf));
+				}
+				//cost.remove(conf);
+			}
+			agent.setCost(costAgent);
+			agents.add(agent);
+		}
+		
+		return agents;
+	}
+
+	public static void printCostHashMap() {
 		Set<List<String>> keys = cost.keySet();
 		List<List<String>> listOfcost = new ArrayList<List<String>>();
-		for(List<String> key : keys){
+		for (List<String> key : keys) {
 			listOfcost = cost.get(key);
-			for(List<String> cost : listOfcost){
-				System.out.println("value of agent '"+key.get(0)+"' is '"+key.get(1)+"' and "+"value of agent '"+key.get(2)+"' is '"+
-			cost.get(0)+"' with cost '"+cost.get(1)+"'");
+			for (List<String> cost : listOfcost) {
+				System.out
+						.println("value of agent '" + key.get(0) + "' is '" + key.get(1) + "' and " + "value of agent '"
+								+ key.get(2) + "' is '" + cost.get(0) + "' with cost '" + cost.get(1) + "'");
 			}
 		}
 	}
@@ -190,7 +228,8 @@ public class Files {
 	}
 
 	/**
-	 * function that print HashMap <String, List<String>>
+	 * function that print HashMap <String, List<String>> (print Hashmap of
+	 * neighbors)
 	 * 
 	 * @param hashMap
 	 */
