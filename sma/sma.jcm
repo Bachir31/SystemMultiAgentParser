@@ -10,21 +10,18 @@
 
 mas sma {
 
-    agent francois : hello2.asl {
-    	beliefs: neighboors("maria")
-    	beliefs: neighboors("alice")
-    	beliefs: token
-    	beliefs: visited
+    agent yassine : hello2.asl {
+    	beliefs: neighboors("yousra")
+    	beliefs: neighboors("warda")
 	}
-	agent maria    : hello2.asl {
-		
+	agent yousra    : hello2.asl {
+		beliefs: neighboors("assine")
+		beliefs: neighboors("christelle")
 	}
-	agent giacomo  : hello2.asl {
+    agent christelle    : hello2.asl {
 	}
-	agent alice    : hello2.asl {
-		beliefs: neighboors("giacomo")
+	agent warda : hello2.asl {
 	}
-    
 /* 
    agent definition
 
