@@ -15,7 +15,7 @@ mas sma {
     	beliefs: neighboors("warda")
 	}
 	agent yousra    : hello2.asl {
-		beliefs: neighboors("assine")
+		beliefs: neighboors("yassine")
 		beliefs: neighboors("christelle")
 	}
     agent christelle    : hello2.asl {
