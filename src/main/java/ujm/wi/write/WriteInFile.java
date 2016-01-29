@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import ujm.wi.entities.Agent;
 import ujm.wi.enums.JCMFile;
 import ujm.wi.enums.Paths;
 
@@ -19,15 +20,16 @@ public class WriteInFile {
 	
 	
 	
-	public static boolean writeFile(HashMap<String, List<String>> hashMap){
+	public static boolean writeFile(List<Agent> agents){
 		
 		try {
+			int random = (int )(Math.random() * agents.size() + 1);
 
 			/* fisrt line in th jcm file */
 			String line = JCMFile.MAS + " " + JCMFile.PROJECT_NAME + " {\n";
 
 			/* open file */
-			File file = new File(Paths.ASL.toString());
+			File file = new File(Paths.JCM.toString());
 
 			/* if file doesn't exists, then create it */ 
 			if (!file.exists()) {
@@ -39,24 +41,31 @@ public class WriteInFile {
 			
 			bw.write(line);
 			
-			Set<String> keys = hashMap.keySet();
-			
-			for (String s : keys) {
-				line = "	"+JCMFile.AGENT+" : ag"+s+" "+JCMFile.ASL_FILE_NAME + " {\n"; 
+			for (Agent agent : agents) {
+				
+				if(Integer.parseInt(agent.getName()) == random){
+					line = "	"+JCMFile.AGENT+" ag"+agent.getName()+": "+JCMFile.ASL_FILE_NAME_ROOT + " {\n";
+				}else{
+					line = "	"+JCMFile.AGENT+" ag"+agent.getName()+": "+JCMFile.ASL_FILE_NAME + " {\n";
+				}
+				 
 				bw.write(line);
 				line = "		"+JCMFile.BELIEFS+": "+ JCMFile.NEIGHBORS+"([";
 				//System.out.print(s + " : [");
-				for (String ss : hashMap.get(s)) {
-					line += "ag"+ss+",";
-					System.out.print(ss + " ");
+				for (String neighbor : agent.getNeighbors()) {
+					line += "ag"+neighbor+",";
+					System.out.print(neighbor + " ");
 				}
-				line = line.substring(0, line.lastIndexOf(","))+"])\n";
+				line = line.substring(0, line.lastIndexOf(","))+"])\n	}\n";
 				bw.write(line);
+				
 				//System.out.print("]\n");
 			}
 			
 			
-			
+			line = "\n	asl-path: src/agt\n"
+				 + "			  src/agt/inc\n\n}";
+			bw.write(line);
 			bw.close();
 
 			System.out.println("Done");

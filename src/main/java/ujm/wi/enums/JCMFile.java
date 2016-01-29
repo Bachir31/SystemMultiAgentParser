@@ -5,7 +5,8 @@ public enum JCMFile {
 	MAS("mas"),
 	AGENT("agent"),
 	BELIEFS("beliefs"),
-	ASL_FILE_NAME("aslFile.asl"),
+	ASL_FILE_NAME("other.asl"),
+	ASL_FILE_NAME_ROOT("parent.asl"),
 	NEIGHBORS("neighbors")
 	;
 	private String name = "";

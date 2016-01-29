@@ -10,6 +10,7 @@ import java.util.Set;
 
 import ujm.wi.entities.Agent;
 import ujm.wi.enums.Paths;
+import ujm.wi.write.WriteInFile;
 
 public class Files {
 
@@ -31,11 +32,12 @@ public class Files {
 		/* List of All Agent */
 		agents = generateListOfAgents();
 		// showHashMapStringString(variableDomain);
+		System.out.println("nombre d'agent : "+agents.size());
 
 		// printCostHashMap();
 		System.out.println("cost size : " + cost.size());
 
-		// WriteInFile.writeFile(neighbors);
+		WriteInFile.writeFile(agents);
 
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
@@ -43,8 +45,12 @@ public class Files {
 
 	}
 
+	
+	
+	
 	/**
 	 * this function generate the list of all agents
+	 * 
 	 * @return
 	 */
 	public static List<Agent> generateListOfAgents() {
@@ -57,19 +63,19 @@ public class Files {
 			agent.setName(s);
 			agent.setNeighbors(neighbors.get(s));
 			agent.setSons(neighbors.get(s));
-			//neighbors.remove(s);
+			// neighbors.remove(s);
 			HashMap<List<String>, List<List<String>>> costAgent = new HashMap<List<String>, List<List<String>>>();
 			for (List<String> conf : keysCost) {
 				if (conf.get(0).equals(s)) {
-					//conf.remove(0);
+					// conf.remove(0);
 					costAgent.put(conf, cost.get(conf));
 				}
-				//cost.remove(conf);
+				// cost.remove(conf);
 			}
 			agent.setCost(costAgent);
 			agents.add(agent);
 		}
-		
+
 		return agents;
 	}
 
